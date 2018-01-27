@@ -28,6 +28,7 @@ import re
 import aioblescan as aiobs
 from aioblescan.plugins import EddyStone
 from aioblescan.plugins import RuuviWeather
+from aioblescan.plugins import Bbw200
 
 
 def check_mac(val):
@@ -45,6 +46,8 @@ parser.add_argument("-m", "--mac", type=check_mac, action='append',
                     help="Look for these MAC addresses.")
 parser.add_argument("-r","--ruuvi", action='store_true', default=False,
                     help="Look only for Ruuvi tag Weather station messages")
+parser.add_argument("-b","--bbw200", action='store_true', default=False,
+                    help="Look only for bbw200 tags")
 parser.add_argument("-R","--raw", action='store_true', default=False,
                     help="Also show the raw data.")
 parser.add_argument("-a","--advertise", type= int, default=0,
@@ -82,6 +85,10 @@ def my_process(data):
         xx=RuuviWeather().decode(ev)
         if xx:
             print("Weather info {}".format(xx))
+    elif opts.bbw200:
+        xx=Bbw200().decode(ev)
+        if xx:
+            print("{}".format(xx))
     else:
         ev.show(0)
 
